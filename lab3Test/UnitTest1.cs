@@ -49,6 +49,19 @@ namespace lab3Test
             Assert.Equal("Invalid credentials", errorMessage);
         }
 
+
+        [Fact]
+        public void InvalidUsername()
+        {
+            driver.Navigate().GoToUrl(baseUrl);
+            driver.FindElement(By.Name("username")).SendKeys("dmin");
+            driver.FindElement(By.Name("password")).SendKeys("admin123");
+            driver.FindElement(By.CssSelector("button[type='submit']")).Click();
+
+            var errorMessage = driver.FindElement(By.CssSelector(".oxd-alert-content-text")).Text;
+            Assert.Equal("Invalid credentials", errorMessage);
+        }
+
         [Fact]
         public void RedirectToCorrectPageAfterLogin()
         {
