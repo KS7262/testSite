@@ -1,4 +1,4 @@
-name: Run Selenium Tests
+name: .NET Tests
 
 on:
   push:
@@ -11,26 +11,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
+    - name: Клон репозиторію
       uses: actions/checkout@v3
 
-    - name: Setup .NET
+    - name: Встановити .NET SDK
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: |
-          6.0.x
-          8.0.x
+        dotnet-version: '6.0.x'
 
-    - name: Install Google Chrome
-      run: |
-        sudo apt update
-        sudo apt install -y google-chrome-stable
-
-    - name: Restore dependencies
+    - name: Відновити залежності
       run: dotnet restore
 
-    - name: Build project
-      run: dotnet build --configuration Release
+    - name: Надати права на selenium-manager
+      run: chmod +x lab3Test/bin/Debug/net6.0/selenium-manager/linux/selenium-manager
 
-    - name: Run tests
-      run: dotnet test lab3Test.sln --logger "console;verbosity=normal"
+    - name: Побудувати рішення
+      run: dotnet build --no-restore
+
+    - name: Запустити тести
+      run: dotnet test --no-build --verbosity normal
